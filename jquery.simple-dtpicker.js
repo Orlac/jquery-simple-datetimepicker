@@ -469,12 +469,30 @@
  		var re = /^(\d{2,4})[-/](\d{1,2})[-/](\d{1,2}) (\d{1,2}):(\d{1,2})$/;
  		var m = re.exec(str);
 		// change year for 4 digits
-		if (m[1] < 99) {
-			var date = new Date();
-			m[1] = parseInt(m[1]) + parseInt(date.getFullYear().toString().substr(0, 2) + "00");
-		}
-		// return
-		return new Date(m[1], m[2] - 1, m[3], m[4], m[5]);
+        if( m ){
+            if (m[1] < 99) {
+                var date = new Date();
+                m[1] = parseInt(m[1]) + parseInt(date.getFullYear().toString().substr(0, 2) + "00");
+            }
+            // return
+            return new Date(m[1], m[2] - 1, m[3], m[4], m[5]);
+        }else{
+            //dd.MM.yyyy HH:mm:ss
+            var arr = str.split(' ');
+            var _date = arr[0];
+            var _time = arr[1];
+            _date = _date.split('.');
+            _time = _time.split(':');
+            var date = new Date();
+            date.setYear( _date[2] )
+            date.setMonth( parseInt( _date[1] ) - 1 )
+            date.setDate( _date[0] )
+
+            date.setHours( _time[0] )
+            date.setMinutes( _time[1] )
+            return date;
+            //return new Date(str);
+        }
 	}
 
 	var zpadding = function(num) {
